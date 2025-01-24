@@ -8,6 +8,7 @@ const HomePage = (props) => {
         <div className="row">
           <div className="col-5 d-inline-block border left-side ">
             <SearchBar />
+            <hr />
           </div>
           <div className=" col-7 d-inline-block border right-side">
             right Side

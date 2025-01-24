@@ -5,6 +5,10 @@
   .row {
     .left-side {
       height: 100vh;
+
+      hr {
+        border-width: 2px;
+      }
     }
     .right-side {
       height: 100vh;

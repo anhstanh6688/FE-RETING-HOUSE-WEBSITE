@@ -1,53 +1,38 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSearch,
-  faFilter,
-  faCheckCircle,
-} from "@fortawesome/free-solid-svg-icons";
-import Dropdown from "react-bootstrap/Dropdown";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import "./Searchbar.scss";
+import { Dropdown, Stack, Button, Form, Badge } from "react-bootstrap";
 
 const SearchBar = () => {
   return (
     <div className="container my-2">
-      {/* Search bar */}
-      <form>
-        <div className="d-flex flex-nowarp align-items-center bg-light  rounded search-bar">
-          {/* Search Input */}
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Tìm kiếm theo từ khóa"
-            style={{
-              border: "none",
-              background: "transparent",
-              outline: "none",
-            }}
-          />
-          {/* Location Dropdown */}
-          <Dropdown>
-            <Dropdown.Toggle variant="btn btn-light" id="dropdown-basic">
-              Hà Nội
-            </Dropdown.Toggle>
+      <Stack direction="horizontal" gap={3}>
+        <Form.Control
+          className="me-auto"
+          placeholder="Tìm kiếm theo từ khóa..."
+        />
+        <Button variant="danger" className="d-flex align-items-center">
+          <FontAwesomeIcon icon={faSearch} className="me-2" /> Search
+        </Button>
+        <div className="vr" />
+        <Dropdown>
+          <Dropdown.Toggle variant="btn btn-outline-danger" id="dropdown-basic">
+            Hà Nội
+          </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item href="#/action-1">Tp. Hồ Chí Minh</Dropdown.Item>
-              <Dropdown.Item href="#/action-2">Đà Nẵng</Dropdown.Item>
-              <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          {/* Search Button */}
-          <button className="btn btn-danger search-btn">
-            <FontAwesomeIcon icon={faSearch} /> Tìm Kiếm
-          </button>
-        </div>
-      </form>
+          <Dropdown.Menu>
+            <Dropdown.Item href="#/action-1">Tp Hồ Chí Minh</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Đà Nẵng</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Cần Thơ</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </Stack>
 
       {/* Filter Options */}
-      <div className="d-flex flex-nowarp mt-3 filter-options">
+      <div className="d-flex flex-nowarp align-items-stretch mt-2  filter-options">
         {/* Quận/ huyện */}
-        <div className="mx-1">
+        <div className="me-1">
           <Dropdown>
             <Dropdown.Toggle variant="btn btn-light" id="dropdown-basic">
               Quận / Huyện
