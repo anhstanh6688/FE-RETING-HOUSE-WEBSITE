@@ -6,8 +6,75 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock, faX } from "@fortawesome/free-solid-svg-icons";
 import facebookIcon from "../../../public/image/facebook.png";
 import googleIcon from "../../../public/image/google.png";
+import { useState } from "react";
+import _ from "lodash";
+import { toast } from "react-toastify";
+import { loginUser } from "../../services/LoginRegister";
 
 const LoginModal = (props) => {
+  const validInputDefault = {
+    emailPhone: true,
+    password: true,
+  };
+
+  const userInputDefault = {
+    emailPhone: "",
+    password: "",
+  };
+
+  const [validInput, setValidInput] = useState(validInputDefault);
+  const [userData, setUserInput] = useState(userInputDefault);
+
+  // hàm này dùng để thay đổi value của các input nhập vào
+  const handleOnChangeInput = (value, name) => {
+    let _userData = _.cloneDeep(userData);
+    _userData[name] = value;
+    setUserInput(_userData);
+  };
+
+  //hàm này dùng để khi tắt modal thì sẽ reset lại toàn bộ input nhập vào trước đó.
+  const resetUserData = () => {
+    setUserInput(userInputDefault);
+    setValidInput(validInputDefault);
+  };
+
+  const checkValidInput = () => {
+    setValidInput(validInputDefault);
+
+    let check = true;
+    ["emailPhone", "password"].map((input) => {
+      if (!userData[input]) {
+        toast.error(`You must fill your ${input}`);
+        let _validInput = _.cloneDeep(validInputDefault);
+        _validInput[input] = false;
+        setValidInput(_validInput);
+        check = false;
+        return;
+      }
+    });
+
+    return check;
+  };
+
+  const handleLoginUser = async () => {
+    if (checkValidInput()) {
+      // console.log(">>> userData: ", userData);
+      let response = await loginUser(userData.emailPhone, userData.password);
+      if (response && response.data && +response.data.EC === 0) {
+        let data = {
+          isAuthenticated: true,
+          token: true,
+        };
+        toast.success("Login success!!!");
+        localStorage.setItem("account", JSON.stringify(data));
+        props.handleClose();
+        window.location.reload();
+      } else {
+        toast.error(`${response.data.EM}`);
+      }
+    }
+  };
+
   return (
     <>
       <Modal show={props.show} onHide={props.handleClose} size="lg">
@@ -21,7 +88,10 @@ const LoginModal = (props) => {
                   <Button
                     variant="light"
                     className="no-hover"
-                    onClick={props.handleClose}
+                    onClick={() => {
+                      resetUserData();
+                      props.handleClose();
+                    }}
                   >
                     <FontAwesomeIcon icon={faX} />
                   </Button>
@@ -35,9 +105,17 @@ const LoginModal = (props) => {
                       <FontAwesomeIcon icon={faUser} />
                     </InputGroup.Text>
                     <Form.Control
-                      className="no-border"
-                      placeholder="Type your username"
-                      aria-label="Username"
+                      className={
+                        validInput.emailPhone
+                          ? "no-border"
+                          : "no-border is-invalid"
+                      }
+                      placeholder="Type email or phone number"
+                      value={userData.emailPhone}
+                      aria-label="Email or phone number"
+                      onChange={(event) =>
+                        handleOnChangeInput(event.target.value, "emailPhone")
+                      }
                     />
                   </InputGroup>
                   <hr className="horizontal-line"></hr>
@@ -47,9 +125,18 @@ const LoginModal = (props) => {
                       <FontAwesomeIcon icon={faLock} />
                     </InputGroup.Text>
                     <Form.Control
-                      className="no-border"
+                      type="password"
+                      className={
+                        validInput.password
+                          ? "no-border"
+                          : "no-border is-invalid"
+                      }
                       placeholder="Type your password"
+                      value={userData.password}
                       aria-label="Password"
+                      onChange={(event) =>
+                        handleOnChangeInput(event.target.value, "password")
+                      }
                     />
                   </InputGroup>
                   <hr className="horizontal-line"></hr>
@@ -60,7 +147,10 @@ const LoginModal = (props) => {
                   </div>
                   <div className="login-btn-container row">
                     <div className="col-md-1"></div>
-                    <Button className=" rounded-pill custom-button col-md-10 mx-auto">
+                    <Button
+                      className=" rounded-pill custom-button col-md-10 mx-auto"
+                      onClick={() => handleLoginUser()}
+                    >
                       Login
                     </Button>
                     <div className="col-md-1"></div>
