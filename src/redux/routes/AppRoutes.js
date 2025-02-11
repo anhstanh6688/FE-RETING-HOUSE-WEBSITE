@@ -1,21 +1,30 @@
 import { Switch, Route } from "react-router-dom";
 import HomePage from "../components/HomePage/HomePage";
+import HouseDetailPage from "../components/pages/HouseDetailPage";
 
-const AppRoutes = (props) => {
+const AppRoutes = () => {
   return (
-    <>
-      <Switch>
-        <Route path="/" exact>
-          <HomePage />
-        </Route>
-        <Route path="/login">Login</Route>
-
-        <Route path="/register">Register</Route>
-
-        <Route path="*">404 not found!</Route>
-      </Switch>
-    </>
+    <Switch>
+      <Route path="/" exact>
+        <HomePage />
+      </Route>
+      <Route path="/login">
+        <div>Login</div>
+      </Route>
+      <Route path="/register">
+        <div>Register</div>
+      </Route>
+      <Route path="/house/:id">
+        <HouseDetailPage />
+      </Route>
+      {/* <Route path="/house/:id" component={HouseDetailPage} /> */}
+      <Route path="*">
+        <div>404 Not Found!</div>
+      </Route>
+    </Switch>
   );
 };
 
 export default AppRoutes;
+
+

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button, Container } from "react-bootstrap";
 import SearchBar from "./redux/components/Searchbar/Searchbar";
 import PostList from "./redux/components/HousePosts/PostList";
+import AppRoutes from "./redux/routes/AppRoutes";
 import "./App.scss";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
           <Navbar />
         </div>
         <div className="app-body">
+        <AppRoutes />
           <div className="home-container">
             <div className="row">
               <div
@@ -48,7 +50,6 @@ function App() {
           </div>
         </div>
       </div>
-
       <ToastContainer
         position="top-right"
         autoClose={3000}
@@ -66,3 +67,4 @@ function App() {
 }
 
 export default App;
+
